@@ -9,7 +9,14 @@ final class CarParser {
     private static final Set<String> LUG = Set.of("small", "med", "big");
     private static final Set<String> SAFETY = Set.of("low", "med", "high");
     private static final Set<String> LABELS = Set.of("unacc", "acc", "good", "vgood");
-
+    private static final Float[]  BUYING_VECTOR = new Float[4];
+    private static final Float[]  MAINT_VECTOR =  new Float[4];
+    private static final Float[]  DOORS_VECTOR = new Float[4];
+    private static final Float[]  PERSONS_VECTOR = new Float[3];
+    private static final Float[]  LUG_BOOT_VECTOR =  new Float[3];
+    private static final Float[]  SAFETY_VECTOR =  new Float[3];
+    
+    
     static CarRecord parse(String line) {
         String[] t = line.split(",");
         if (t.length != 7) {
@@ -47,7 +54,9 @@ final class CarParser {
             "unacc",0,"acc",1,"good",2,"vgood",3
     );
 
-    static int buyingInt(CarRecord r){ return ORD4.get(r.buying); }
+    static int buyingInt(CarRecord r) {
+        return ORD4.get(r.buying);
+    }
     static int maintInt(CarRecord r){ return ORD4.get(r.maint); }
     static int safetyInt(CarRecord r){ return ORD4.get(r.safety); }
     static int doorsInt(CarRecord r){ return r.doors.equals("5more") ? 5 : Integer.parseInt(r.doors); }
@@ -56,9 +65,26 @@ final class CarParser {
     static int labelInt(CarRecord r){ return LABEL2INT.get(r.label); }
 
 
-    static float[] toFeatures(CarRecord r) {
+    static float[] toNumericFeatures(CarRecord carRecord) {
         return new float[]{
-                buyingInt(r), maintInt(r), doorsInt(r), personsInt(r), lugBootInt(r), safetyInt(r)
+                buyingInt(carRecord), maintInt(carRecord), doorsInt(carRecord), personsInt(carRecord), lugBootInt(carRecord), safetyInt(carRecord)
+        };
+    }
+
+    static int getBuyingFeatureIndex(CarRecord carRecord) {
+        float[] carNumericFeatures = toNumericFeatures(carRecord);
+        int buyingNumber = (int) carNumericFeatures[0];
+        int maintNumber = (int) carNumericFeatures[1];
+        int doorsNumber = (int) carNumericFeatures[2];
+        int personsNumber = (int) carNumericFeatures[3];
+        int lugNumber = (int) carNumericFeatures[4];
+        int safetyNumber = (int) carNumericFeatures[5];
+        toOneHotFeatures(buyingNumber, maintNumber, doorsNumber, personsNumber, lugNumber, safetyNumber);
+    }
+
+    static float[] toOneHotFeatures(int buyingInt, int maintInt, int doorsInt, int personsInt, int lugInt, int safetyInt) {
+        return new float[]{
+
         };
     }
 }

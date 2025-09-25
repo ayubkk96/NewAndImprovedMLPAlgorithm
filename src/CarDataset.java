@@ -14,7 +14,7 @@ final class CarDataset {
     public void addLine(String line) {
         CarRecord r = CarParser.parse(line);
         rows.add(r);
-        features.add(CarParser.toFeatures(r));
+        features.add(CarParser.toNumericFeatures(r));
         labels.add(CarParser.labelInt(r));
     }
 
