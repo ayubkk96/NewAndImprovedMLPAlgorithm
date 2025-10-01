@@ -21,4 +21,5 @@ public final class CarRecord {
     @Override public String toString() {
         return String.join(",", buying, maint, doors, persons, lugBoot, safety, label);
     }
+
 }
